@@ -1,41 +1,38 @@
 package org.example;
 
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
+import org.example.model.StockSnapshot;
+import org.example.service.StockFetcher;
 
-import java.time.Instant;
 import java.util.Queue;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class App {
 
-    private static final Queue<StockSnapshot> queue = new ConcurrentLinkedQueue<>();
+    private static final Queue<StockSnapshot> queue =
+            new ConcurrentLinkedQueue<>();
 
     public static void main(String[] args) {
+
+        StockFetcher fetcher = new StockFetcher();
+
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
         Runnable task = () -> {
             try {
-                Stock stock = YahooFinance.get("^DJI");
-
-                if (stock != null && stock.getQuote().getPrice() != null) {
-                    double price = stock.getQuote().getPrice().doubleValue();
-                    StockSnapshot snapshot = new StockSnapshot(Instant.now(), price);
-                    queue.add(snapshot);
-                    System.out.println(snapshot);
-
-                }
+                StockSnapshot snapshot = fetcher.fetch();
+                queue.add(snapshot);
+                System.out.println("Added " + snapshot);
+            } catch (Exception e) {
+                System.out.println("Fetch failed: "  + e.getMessage());
             }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
         };
+
         scheduler.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
     }
-
-
 
 }
 
