@@ -25,6 +25,8 @@ dependencies {
     implementation libs.guava
 
     implementation "com.yahoofinance-api:YahooFinanceAPI:3.17.0"
+
+    implementation 'org.slf4j:slf4j-simple:2.0.13'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
