@@ -14,6 +14,8 @@ public class App {
 
     private static final Queue<StockSnapshot> queue =
             new ConcurrentLinkedQueue<>();
+    
+    private static final String DOW_JONES_SYMBOL = "^DJI";
 
     public static void main(String[] args) {
 
@@ -23,7 +25,7 @@ public class App {
 
         Runnable task = () -> {
             try {
-                StockSnapshot snapshot = fetcher.fetch();
+                StockSnapshot snapshot = fetcher.fetch(DOW_JONES_SYMBOL);
                 queue.add(snapshot);
                 System.out.println("Added " + snapshot);
             } catch (Exception e) {
@@ -31,8 +33,7 @@ public class App {
             }
         };
 
-        scheduler.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(task, 0, 60, TimeUnit.SECONDS);
     }
 
 }
-

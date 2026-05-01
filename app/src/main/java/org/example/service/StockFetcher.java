@@ -5,19 +5,19 @@ import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 
 public class StockFetcher {
     
-    public StockSnapshot fetch() throws IOException {
-        Stock stock = YahooFinance.get("^DJI");
+    public StockSnapshot fetch(String symbol) throws IOException {
+        Stock stock = YahooFinance.get(symbol);
         if (stock == null || stock.getQuote().getPrice() == null) {
-            throw new IOException("Stock not found");
+            throw new IOException("Stock not found or price is not available for: " + symbol);
         }
-            double price = stock.getQuote().getPrice().doubleValue();
-            return new StockSnapshot(Instant.now(), price);
-
+        BigDecimal price = stock.getQuote().getPrice();
+        return new StockSnapshot(Instant.now(), price);
 
     }
 }
