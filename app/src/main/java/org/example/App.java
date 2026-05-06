@@ -45,6 +45,6 @@ public class App {
                 System.out.println("Fetch failed: " + e.getMessage());
             }
         };
-        scheduler.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(task, 0, 5, TimeUnit.SECONDS);
     }
 }
