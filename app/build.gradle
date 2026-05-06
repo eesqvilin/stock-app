@@ -24,7 +24,9 @@ dependencies {
     // This dependency is used by the application.
     implementation libs.guava
 
-    implementation "com.yahoofinance-api:YahooFinanceAPI:3.17.0"
+    //implementation "com.yahoofinance-api:YahooFinanceAPI:3.17.0"
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
 
     implementation 'org.slf4j:slf4j-simple:2.0.13'
 }
